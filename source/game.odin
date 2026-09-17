@@ -1,62 +1,36 @@
 package game
 
 import rl "vendor:raylib"
-import "core:log"
-import "core:fmt"
+//import "core:log"
+//import "core:fmt"
 import "core:c"
+import game "/wildfire"
 
 run: bool
-texture: rl.Texture
-texture2: rl.Texture
-texture2_rot: f32
+WIN_W :: 1920 / 3
+WIN_H :: 1080 / 3
+w: game.World
 
 init :: proc() {
 	run = true
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
-	rl.InitWindow(1280, 720, "Odin + Raylib on the web")
-
-	// Anything in `assets` folder is available to load.
-	texture = rl.LoadTexture("assets/round_cat.png")
-
-	// A different way of loading a texture: using `read_entire_file` that works
-	// both on desktop and web. Note: You can import `core:os` and use
-	// `os.read_entire_file`. But that won't work on web. Emscripten has a way
-	// to bundle files into the build, and we access those using this
-	// special `read_entire_file`.
-	if long_cat_data, long_cat_ok := read_entire_file("assets/long_cat.png", context.temp_allocator); long_cat_ok {
-		long_cat_img := rl.LoadImageFromMemory(".png", raw_data(long_cat_data), c.int(len(long_cat_data)))
-		texture2 = rl.LoadTextureFromImage(long_cat_img)
-		rl.UnloadImage(long_cat_img)
-	}
+	rl.InitWindow(i32(WIN_W), i32(WIN_H), "fire!!!!!!!!!!!! ❤️‍🔥🔥🔥🔥🔥🔥🔥🔥")
+	w = game.init_world()
+	//only use assets folder. both loadTexture and read_entire_file wrapper should work
+	//_ = rl.LoadTexture("assets/round_cat.png")
 }
 
 update :: proc() {
+	dt := rl.GetFrameTime()
+	game.update_world(&w, dt)
+
 	rl.BeginDrawing()
-	rl.ClearBackground({0, 120, 153, 255})
-	{
-		texture2_rot += rl.GetFrameTime()*50
-		source_rect := rl.Rectangle {
-			0, 0,
-			f32(texture2.width), f32(texture2.height),
-		}
-		dest_rect := rl.Rectangle {
-			300, 220,
-			f32(texture2.width)*5, f32(texture2.height)*5,
-		}
-		rl.DrawTexturePro(texture2, source_rect, dest_rect, {dest_rect.width/2, dest_rect.height/2}, texture2_rot, rl.WHITE)
-	}
-	rl.DrawTextureEx(texture, rl.GetMousePosition(), 0, 5, rl.WHITE)
+	rl.ClearBackground({20, 20, 20, 255})
+	game.draw_world(&w)
+	rl.DrawFPS(0, 0)
+	
 	rl.DrawRectangleRec({0, 0, 220, 130}, rl.BLACK)
-	rl.GuiLabel({10, 10, 200, 20}, "raygui works!")
-
-	if rl.GuiButton({10, 30, 200, 20}, "Print to log (see console)") {
-		log.info("log.info works!")
-		fmt.println("fmt.println too.")
-	}
-
-	if rl.GuiButton({10, 60, 200, 20}, "Source code (opens GitHub)") {
-		rl.OpenURL("https://github.com/karl-zylinski/odin-raylib-web")
-	}
+	rl.GuiLabel({10, 10, 200, 20}, "test")
 
 	if rl.GuiButton({10, 90, 200, 20}, "Quit") {
 		run = false
@@ -64,9 +38,17 @@ update :: proc() {
 
 	rl.EndDrawing()
 
-	// Anything allocated using temp allocator is invalid after this.
 	free_all(context.temp_allocator)
 }
+
+
+
+
+// DOnt touch stuff below. i dont know if its necessary but its part of karls example
+
+
+
+
 
 // In a web build, this is called when browser changes size. Remove the
 // `rl.SetWindowSize` call if you don't want a resizable game.
