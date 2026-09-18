@@ -1,13 +1,14 @@
 package fire
 
 //import "core:relative"
-//import rl "vendor:raylib"
+import rl "vendor:raylib"
 //import "core:fmt"
 //import "core:math"
 //import "core:math/linalg"
 //import "core:math/rand"
 
 Vec2 :: [2]f32
+IVec2 :: [2]i32
 
 Game_State :: enum u8 {
     main_menu,
@@ -19,10 +20,17 @@ Game_State :: enum u8 {
 World :: struct {
     state: Game_State,
     level: Level,
+    game: Space,
+    //screen: IVec2,
+}
+
+Space :: struct {
+    rentex: rl.RenderTexture2D,
+    rect: rl.Rectangle
 }
 
 Player :: struct {
-    using pos: Vec2,
+    pos: Vec2,
 }
 
 Level :: struct {
