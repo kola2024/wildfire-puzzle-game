@@ -10,6 +10,8 @@ run: bool
 WIN_W :: 1920 / 3
 WIN_H :: 1080 / 3
 w: game.World
+RES_W :: 100
+RES_X :: 100
 
 init :: proc() {
 	run = true

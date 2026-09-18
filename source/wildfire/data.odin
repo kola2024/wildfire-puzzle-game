@@ -26,7 +26,8 @@ World :: struct {
 
 Space :: struct {
     rentex: rl.RenderTexture2D,
-    rect: rl.Rectangle
+    size: f32,
+    pos: Vec2,
 }
 
 Player :: struct {

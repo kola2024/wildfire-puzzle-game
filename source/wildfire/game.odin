@@ -9,21 +9,22 @@ import rl "vendor:raylib"
 init_world :: proc() -> World {
     w := World{
         state = .main_menu,
+        game = {rentex = rl.LoadRenderTexture(RES_W, RES_W)},
     }
     return w
 }
 
 update_world :: proc(w: ^World, dt: f32) {
 switch w.state {
-    case .main_menu:
-        update_main_menu(w, dt)
+case .main_menu:
+    update_main_menu(w, dt)
 
-    case .level_menu, .game, .game_menu:
+case .level_menu, .game, .game_menu:
 }
+sw, sh := f32(rl.GetScreenWidth()), f32(rl.GetScreenHeight())
+w.game.size = min(sw, sh)
 
-screen := IVec2{rl.GetScreenWidth(), rl.GetScreenHeight()}
-ratio := screen.x / screen.y
-w.game.rect = rl.Rectangle{}
+w.game.pos = {(sw - w.game.size) / 2, (sh - w.game.size) / 2}
 }
 
 update_main_menu :: proc(w: ^World, dt: f32) {
