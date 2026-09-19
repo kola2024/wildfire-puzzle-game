@@ -21,7 +21,9 @@ World :: struct {
     state: Game_State,
     level: Level,
     game: Space,
-    //screen: IVec2,
+    buttons: [dynamic]Button,
+    mouse: Vec2,
+    screen: IVec2,
 }
 
 Space :: struct {
@@ -45,4 +47,11 @@ Object :: enum u8 {
 
 Tile :: struct {
     object: Object,
+}
+
+Button :: struct {
+    rect: rl.Rectangle,
+    label: cstring,
+    active: bool,
+    action: proc(w: ^World),
 }

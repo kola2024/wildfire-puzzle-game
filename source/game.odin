@@ -10,8 +10,7 @@ run: bool
 WIN_W :: 1920 / 3
 WIN_H :: 1080 / 3
 w: game.World
-RES_W :: 100
-RES_X :: 100
+
 
 init :: proc() {
 	run = true
@@ -31,12 +30,12 @@ update :: proc() {
 	game.draw_world(&w)
 	rl.DrawFPS(0, 0)
 	
-	rl.DrawRectangleRec({0, 0, 220, 130}, rl.BLACK)
-	rl.GuiLabel({10, 10, 200, 20}, "test")
+	// rl.DrawRectangleRec({0, 0, 220, 130}, rl.BLACK)
+	// rl.GuiLabel({10, 10, 200, 20}, "test")
 
-	if rl.GuiButton({10, 90, 200, 20}, "Quit") {
-		run = false
-	}
+	// if rl.GuiButton({10, 90, 200, 20}, "Quit") {
+	// 	run = false
+	// }
 
 	rl.EndDrawing()
 
