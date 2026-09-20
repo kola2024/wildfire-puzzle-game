@@ -5,10 +5,10 @@ import "core:fmt"
 //import "core:math"
 //import "core:math/linalg"
 //import "core:math/rand"
-import "base:runtime"
 
 init_world :: proc() -> World {
     w := World{
+        run = true,
         state = .main_menu,
         game = {rentex = rl.LoadRenderTexture(RES_W, RES_W)},
     }
@@ -53,7 +53,7 @@ update_main_menu :: proc(w: ^World, dt: f32) {
 back :: proc(w: ^World) {
     switch w.state {
     case .main_menu:
-        runtime.exit(0)
+        w.run = false
     case .level_menu:
     case .game:
     case .game_menu:

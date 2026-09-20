@@ -35,7 +35,7 @@ update :: proc() {
 	// rl.GuiLabel({10, 10, 200, 20}, "test")
 
 	// if rl.GuiButton({10, 90, 200, 20}, "Quit") {
-	// 	run = false
+	if w.run == false do run = false
 	// }
 
 	rl.EndDrawing()

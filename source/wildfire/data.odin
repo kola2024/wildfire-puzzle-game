@@ -19,6 +19,7 @@ Game_State :: enum u8 {
 }
 
 World :: struct {
+    run: bool,
     state: Game_State,
     level: Level,
     game: Space,
