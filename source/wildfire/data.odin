@@ -9,6 +9,7 @@ import rl "vendor:raylib"
 
 Vec2 :: [2]f32
 IVec2 :: [2]i32
+Vec3 :: [3]f32
 
 Game_State :: enum u8 {
     main_menu,
@@ -23,7 +24,9 @@ World :: struct {
     game: Space,
     buttons: [dynamic]Button,
     mouse: Vec2,
+    mouse_game: Vec2,
     screen: IVec2,
+    cam: rl.Camera2D,
 }
 
 Space :: struct {

@@ -25,9 +25,8 @@ update_world :: proc(w: ^World, dt: f32) {
     }
 
     for &b in w.buttons {
-        if check_button_active(w, &b) {}
+        if check_button_active(w, &b) {b.action(w)}
     }
-    log233332(w.buttons[:])
 
     sw, sh := f32(rl.GetScreenWidth()), f32(rl.GetScreenHeight())
     w.game.size = min(sw, sh)
@@ -35,6 +34,13 @@ update_world :: proc(w: ^World, dt: f32) {
     w.screen = {rl.GetScreenWidth(), rl.GetScreenHeight()}
 
     w.mouse = rl.GetMousePosition()
+    w.mouse_game = screen_to_game(w, w.mouse)
+
+    w.cam = rl.Camera2D{
+        offset = w.game.pos,
+        zoom = w.game.size / RES_W,
+        target = {0,0},
+    }
 }
 
 update_main_menu :: proc(w: ^World, dt: f32) {

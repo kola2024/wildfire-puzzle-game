@@ -9,7 +9,7 @@ import rl "vendor:raylib"
 RES_W :: 100
 
 draw_world :: proc(w: ^World) {
-    rl.BeginDrawing()
+    //dont rl.BeginDrawing()
 	rl.ClearBackground(rl.BLACK)
     rl.BeginTextureMode(w.game.rentex)
     rl.ClearBackground({20, 20, 20, 255})
@@ -22,6 +22,7 @@ draw_world :: proc(w: ^World) {
     src := rl.Rectangle{0, 0, RES_W, -RES_W}
     dst := rl.Rectangle{w.game.pos.x, w.game.pos.y, w.game.size, w.game.size}
     rl.DrawTexturePro(w.game.rentex.texture, src, dst, {0,0}, 0, rl.WHITE)
+    //dont rl.EndDrawing()
 }
 
 draw_button :: proc(button: Button) {

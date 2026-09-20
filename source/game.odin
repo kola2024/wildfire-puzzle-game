@@ -17,6 +17,7 @@ init :: proc() {
 	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
 	rl.InitWindow(i32(WIN_W), i32(WIN_H), "fire!!!!!!!!!!!! ❤️‍🔥🔥🔥🔥🔥🔥🔥🔥")
 	w = game.init_world()
+	rl.SetTargetFPS(60)
 	//only use assets folder. both loadTexture and read_entire_file wrapper should work
 	//_ = rl.LoadTexture("assets/round_cat.png")
 }
