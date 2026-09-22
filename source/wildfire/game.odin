@@ -10,17 +10,17 @@ init_world :: proc() -> World {
 	w := World {
 		run = true,
 		state = .main_menu,
-        prev_state = .game, //anything else
 		game = {rentex = rl.LoadRenderTexture(RES_W, RES_W)},
 	}
 
     init_bindings()
     update_main_menu(&w, 0)
+
+    marshal_json()
 	return w
 }
 
 update_world :: proc(w: ^World, dt: f32) {
-    log233332(w.buttons[:])
     prev_state := w.state
 
     sw, sh := f32(rl.GetScreenWidth()), f32(rl.GetScreenHeight())

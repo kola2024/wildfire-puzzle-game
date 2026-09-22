@@ -1,11 +1,6 @@
 package fire
 
-//import "core:relative"
 import rl "vendor:raylib"
-//import "core:fmt"
-//import "core:math"
-//import "core:math/linalg"
-//import "core:math/rand"
 
 Vec2 :: [2]f32
 IVec2 :: [2]i32
@@ -21,7 +16,6 @@ Game_State :: enum u8 {
 World :: struct {
     run: bool,
     state: Game_State,
-    prev_state: Game_State, //little "bad" but i think this is the best pattern (*0)
     level: Level,
     game: Space,
     buttons: [dynamic]Button, //buttons

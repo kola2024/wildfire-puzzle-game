@@ -20,6 +20,7 @@ init :: proc() {
 	rl.SetTargetFPS(60)
 	//only use assets folder. both loadTexture and read_entire_file wrapper should work
 	//_ = rl.LoadTexture("assets/round_cat.png")
+	//x := read_entire_file("example.txt")
 }
 
 update :: proc() {
