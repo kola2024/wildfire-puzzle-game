@@ -11,6 +11,7 @@ check_buttons_active :: proc(w: ^World) {
 			button.active = rl.CheckCollisionPointRec(w.mouse_game, button.rect)
 		}
 	} else {
+        for &b in w.buttons do b.active = false
 		if rl.IsKeyPressed(Action[Input.menu_down]) do w.button_index += 1
 		if rl.IsKeyPressed(Action[Input.menu_up]) do w.button_index -= 1
 		idx := w.button_index % u8(len(w.buttons))

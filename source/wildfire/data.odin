@@ -21,13 +21,13 @@ Game_State :: enum u8 {
 World :: struct {
     run: bool,
     state: Game_State,
+    prev_state: Game_State, //little "bad" but i think this is the best pattern (*0)
     level: Level,
     game: Space,
-    buttons: [dynamic]Button,
+    buttons: [dynamic]Button, //buttons
     mouse: Vec2,
     mouse_game: Vec2,
-    screen: IVec2,
-    cam: rl.Camera2D,
+    screen: IVec2, //CURRENTLY UNUSED: KEPT FOR FUN!!!!!!!!!
     keyboard_input: bool, //buttons
     button_index: u8, //button
     last_mouse_pos: Vec2, //button
@@ -62,3 +62,10 @@ Button :: struct {
     active: bool,
     action: proc(w: ^World),
 }
+
+/*
+(*0): options for "registering" state change:
+1: capture previous state change every frame. not a fan as it bloats struct
+2: use an OO style public proc that enforces update upon a specified state_change() proc. dont like as ill forget.
+
+*/
