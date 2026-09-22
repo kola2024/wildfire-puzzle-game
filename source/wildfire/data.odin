@@ -28,6 +28,9 @@ World :: struct {
     mouse_game: Vec2,
     screen: IVec2,
     cam: rl.Camera2D,
+    keyboard_input: bool, //buttons
+    button_index: u8, //button
+    last_mouse_pos: Vec2, //button
 }
 
 Space :: struct {
