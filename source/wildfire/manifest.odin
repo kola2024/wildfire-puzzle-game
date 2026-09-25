@@ -41,11 +41,13 @@ marshal_json :: proc() {
 
 manifest_levelinfo_to_grid :: proc(w: ^World) {
     clear(&w.level.grid)
+    current_level := w.manifest.levels[w.level_index]
     //current_level := w.manifest.levels[w.level_index] //current_level.size.x*current_level.size.y
-    for xstring in w.manifest.levels[w.level_index].grid {
+    for xstring in current_level.grid {
         for ychar in xstring {
             append(&w.level.grid, Object(ychar))//grid_stream[x*int(current_level.size.y)+y] = Object(ychar)
         }
     }
+    w.level.player.pos = current_level.player_pos
     log233332(w.level)
 }

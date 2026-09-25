@@ -12,8 +12,13 @@ init_world :: proc() -> World {
 		state = .main_menu,
 		game = {rentex = rl.LoadRenderTexture(RES_W, RES_W)},
 		manifest = unmarshal_manifest(),
+		resources = {rl.LoadTexture("../../assets/wildfire_atlas.png")},
 	}
 
+	rl.SetTextureFilter(w.resources.atlas, .POINT)
+
+	init_object_tex()
+	log233332(Object_Recs)
     init_bindings()
     update_main_menu(&w, 0)
 
@@ -24,10 +29,10 @@ init_world :: proc() -> World {
 update_world :: proc(w: ^World, dt: f32) {
     prev_state := w.state
 
-    sw, sh := f32(rl.GetScreenWidth()), f32(rl.GetScreenHeight())
+	w.screen = {rl.GetScreenWidth(), rl.GetScreenHeight()}
+    sw, sh := f32(w.screen.x), f32(w.screen.y)
 	w.game.size = min(sw, sh)
 	w.game.pos = {(sw - w.game.size) / 2, (sh - w.game.size) / 2}
-	w.screen = {rl.GetScreenWidth(), rl.GetScreenHeight()}
 
 	w.last_mouse_pos = w.mouse
 	w.mouse = rl.GetMousePosition()

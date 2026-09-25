@@ -9,7 +9,8 @@ Vec3 :: [3]f32
 LevelInfo :: struct {
     id: i32,
     name: cstring,
-    size: Vec2,
+    size: IVec2,
+    player_pos: IVec2,
     grid: [dynamic]string,
 } 
 
@@ -38,6 +39,11 @@ World :: struct {
     last_mouse_pos: Vec2, //button
     manifest: Manifest, //level (preloaded file)
     level_index: int, //level
+    resources: Resources,
+}
+
+Resources :: struct {
+    atlas: rl.Texture2D,
 }
 
 Space :: struct {
@@ -47,7 +53,7 @@ Space :: struct {
 }
 
 Player :: struct {
-    pos: Vec2,
+    pos: IVec2,
 }
 
 Level :: struct {
