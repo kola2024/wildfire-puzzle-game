@@ -16,6 +16,7 @@ screen_to_game :: proc(w: ^World, vec: Vec2) -> Vec2 {
         0, 0, 1,
     }
     res := t * Vec3{vec.x, vec.y, 1}
-    return Vec2{res.x, res.y}
+    //return Vec2{res.x, res.y}
+    return res.xy //SWIZZLE!
 }
 

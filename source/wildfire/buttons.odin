@@ -2,8 +2,6 @@ package fire
 
 import rl "vendor:raylib"
 
-
-
 check_buttons_active :: proc(w: ^World) {
     assert(len(w.buttons) > 0, "buttons is 0")
 	if !w.keyboard_input {
@@ -17,10 +15,6 @@ check_buttons_active :: proc(w: ^World) {
 		idx := w.button_index % u8(len(w.buttons))
         w.buttons[idx].active = true
 	}
-}
-
-check_button_state :: proc() {
-
 }
 
 check_input_mode :: proc(w: ^World) {
