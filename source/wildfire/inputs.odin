@@ -7,6 +7,10 @@ Input :: enum i32 {
 	menu_up,
 	menu_down,
     menu_select,
+	up,
+	down,
+	left,
+	right,
 	COUNT,
 }
 
@@ -19,6 +23,10 @@ init_bindings :: proc() {
 	Action[Input.menu_up] = .UP
 	Action[Input.menu_down] = .DOWN
 	Action[Input.menu_select] = .ENTER
+	Action[Input.up] = .W
+	Action[Input.down] = .S
+	Action[Input.left] = .A
+	Action[Input.right] = .D
 }
 
 update_binding :: proc() {

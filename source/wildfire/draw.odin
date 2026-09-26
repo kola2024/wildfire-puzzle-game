@@ -76,4 +76,6 @@ draw_game :: proc(w: ^World) {
             //case .Rock: rl.DrawTexturePro(Object_Recs[.Rock], )
         }
     }
+    player_dest_rec := rl.Rectangle{f32(w.level.player.pos.x*scale)+f32(total_offset), f32(w.level.player.pos.y*scale)+f32(total_offset), f32(scale), f32(scale)}
+    rl.DrawTexturePro(w.resources.atlas, Object_Recs[Object.None], player_dest_rec, {0,0}, 0, rl.RED)
 }

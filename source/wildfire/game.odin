@@ -2,7 +2,7 @@ package fire
 
 import rl "vendor:raylib"
 //import "core:fmt"
-//import "core:math"
+import "core:math"
 //import "core:math/linalg"
 //import "core:math/rand"
 
@@ -20,7 +20,7 @@ init_world :: proc() -> World {
 	init_object_tex()
 	log233332(Object_Recs)
     init_bindings()
-    update_main_menu(&w, 0)
+    init_main_menu(&w, 0)
 
     unmarshal_manifest()
 	return w
@@ -64,18 +64,25 @@ update_world :: proc(w: ^World, dt: f32) {
 		}
 	}
 
+	switch w.state {
+	case .main_menu:
+	case .level_menu:
+	case .game:
+		update_game(w, dt)
+	case .game_menu:
+	}
 
 	if prev_state != w.state { 
         clear(&w.buttons)
 		log233332("cleared")
 	switch w.state {
 	case .main_menu:
-		update_main_menu(w, dt)
+		init_main_menu(w, dt)
 
 	case .level_menu:
-		update_level_menu(w, dt)
+		init_level_menu(w, dt)
 	case .game:
-		update_game(w, dt)
+		//update_game(w, dt)
 	case .game_menu:
 	}
 }
@@ -85,19 +92,32 @@ update_world :: proc(w: ^World, dt: f32) {
    
 }
 
-update_main_menu :: proc(w: ^World, dt: f32) {
+init_main_menu :: proc(w: ^World, dt: f32) {
 	append(&w.buttons, Button{rl.Rectangle{10, 10, 50, 10}, "Play", false, BA_State{.level_menu}})
 	append(&w.buttons, Button{rl.Rectangle{10, 30, 50, 10}, "Quit", false, BA_Exit{}})
 }
 
-update_level_menu :: proc(w: ^World, dt: f32) {
+init_level_menu :: proc(w: ^World, dt: f32) {
 	//temp: just one button
 	append(&w.buttons, Button{rl.Rectangle{10, 50, 50, 10}, "lvl 1", false, BA_Level{1}})
 }
 
 update_game :: proc(w: ^World, dt: f32) {
-	
+	player_velocity := IVec2{0,0}
+	if rl.IsKeyPressed(Action[Input.up]) do player_velocity.y -= 1
+	if rl.IsKeyPressed(Action[Input.down]) do player_velocity.y += 1
+	if rl.IsKeyPressed(Action[Input.left]) do player_velocity.x -= 1
+	if rl.IsKeyPressed(Action[Input.right]) do player_velocity.x += 1
+
+	w.level.player.pos += player_velocity
+	abs_player_velocity := IVec2{math.abs(player_velocity.x), math.abs(player_velocity.y)}
+	if abs_player_velocity != {0,0} {
+		if abs_player_velocity == {1,1} do w.level.time += 2
+		else do w.level.time += 1
+	}
+	log233332(w.level.time)
 }
+
 
 level :: proc(w: ^World) {
 

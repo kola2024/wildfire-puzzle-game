@@ -59,6 +59,7 @@ Player :: struct {
 Level :: struct {
     grid: [dynamic]Object,
     player: Player,
+    time: i32,
 }   
 
 Object :: enum u8 {

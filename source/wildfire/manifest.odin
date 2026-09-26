@@ -41,6 +41,7 @@ marshal_json :: proc() {
 
 manifest_levelinfo_to_grid :: proc(w: ^World) {
     clear(&w.level.grid)
+    w.level.time = 0
     current_level := w.manifest.levels[w.level_index]
     //current_level := w.manifest.levels[w.level_index] //current_level.size.x*current_level.size.y
     for xstring in current_level.grid {
