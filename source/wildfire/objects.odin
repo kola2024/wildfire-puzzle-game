@@ -8,6 +8,8 @@ Object :: enum u8 {
 	Flame,
 	Baby_Flame,
 	Ash,
+	Flower,
+	Burning_Flower,
 }
 
 rune_to_object :: proc(r: rune) -> Object {
@@ -17,11 +19,13 @@ rune_to_object :: proc(r: rune) -> Object {
 	case 'F': return .Flame
 	case 'f': return .Baby_Flame
 	case 'a': return .Ash
+	case 'B': return .Flower
+	case 'b': return .Burning_Flower
 	}
 	return .None
 }
 ATLAS_WIDTH :: 4	//
-ATLAS_HEIGHT :: 1//
+ATLAS_HEIGHT :: 2//
 
 ATLAS_TILE_SIZE :: 16
 
@@ -41,5 +45,7 @@ init_object_tex :: proc() {
 		.Flame = atlas_rec(2),
 		.Baby_Flame = atlas_rec(2),
 		.Ash = atlas_rec(3),
+		.Flower = atlas_rec(4),
+		.Burning_Flower = atlas_rec(5),
 	}
 }

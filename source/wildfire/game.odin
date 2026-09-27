@@ -133,7 +133,10 @@ update_time :: proc(w: ^World) {
 	grid := w.level.grid
 	grid_width := int(w.manifest.levels[w.level_index].size.x)
 
-	for &object in w.level.grid {if object == .Baby_Flame do object = .Flame}
+	for &object in w.level.grid {
+		if object == .Baby_Flame do object = .Flame
+		else if object == .Burning_Flower do object = .Baby_Flame
+	}
 	for &object, index in w.level.grid {
 		switch object {
 		case .None:
@@ -141,31 +144,29 @@ update_time :: proc(w: ^World) {
 		case .Flame: 
 			right := index+1 //note: check bounds
 			if right < len(grid) {
-				if grid[right] == .Wheat {
-					grid[right] = .Baby_Flame
-				}
+				if grid[right] == .Wheat do grid[right] = .Baby_Flame
+				else if grid[right] == .Flower do grid[right] = .Burning_Flower
 			}
 			left := index-1
 			if left >= 0 && left / grid_width == index / grid_width {
-				if grid[left] == .Wheat {
-					grid[left] = .Baby_Flame
-				}
+				if grid[left] == .Wheat do grid[left] = .Baby_Flame
+				else if grid[left] == .Flower do grid[left] = .Burning_Flower
 			}
 			down := index+grid_width
 			if down < len(grid) {
-				if grid[down] == .Wheat {
-					grid[down] = .Baby_Flame
-				}
+				if grid[down] == .Wheat do grid[down] = .Baby_Flame
+				else if grid[down] == .Flower do grid[down] = .Burning_Flower
 			}
 			up := index-grid_width
 			if up >= 0 {
-				if grid[up] == .Wheat {
-					grid[up] = .Baby_Flame
-				}
+				if grid[up] == .Wheat do grid[up] = .Baby_Flame
+				else if grid[up] == .Flower do grid[up] = .Burning_Flower
 			}
 			object = .Ash
 		case .Baby_Flame:
 		case .Ash:
+		case .Burning_Flower:
+		case .Flower:
 		}
 	}
 }
