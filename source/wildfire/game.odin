@@ -42,7 +42,7 @@ update_world :: proc(w: ^World, dt: f32) {
 		check_buttons_active(w)
 		for &b in w.buttons {
 			if b.active {
-				if rl.IsMouseButtonPressed(.LEFT) || rl.IsKeyPressed(Action[Input.menu_select]) {
+				if rl.IsMouseButtonPressed(.LEFT) || action_pressed(.menu_select) {
 					switch a in b.action {
 					case BA_Exit:
 						w.run = false
@@ -116,13 +116,13 @@ init_level_menu :: proc(w: ^World, dt: f32) {
 
 update_game :: proc(w: ^World, dt: f32) {
 	player_velocity := IVec2{0,0}
-	if rl.IsKeyPressed(Action[Input.up]) do player_velocity.y -= 1
-	else if rl.IsKeyPressed(Action[Input.down]) do player_velocity.y += 1
-	else if rl.IsKeyPressed(Action[Input.left]) do player_velocity.x -= 1
-	else if rl.IsKeyPressed(Action[Input.right]) do player_velocity.x += 1
+	if action_pressed(.up) do player_velocity.y -= 1
+	else if action_pressed(.down) do player_velocity.y += 1
+	else if action_pressed(.left) do player_velocity.x -= 1
+	else if action_pressed(.right) do player_velocity.x += 1
 
 	w.level.player.pos += player_velocity
-	if player_velocity != {0,0} || rl.IsKeyPressed(Action[Input.wait]) {
+	if player_velocity != {0,0} || action_pressed(.wait) {
 		w.level.time += 1
 		update_time(w) //can get rid of level.time in favor of immediate mode, unless we track time for a stat or something/
 	}
