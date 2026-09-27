@@ -98,9 +98,20 @@ init_main_menu :: proc(w: ^World, dt: f32) {
 
 init_level_menu :: proc(w: ^World, dt: f32) {
 	//temp: just one button
-	append(&w.buttons, Button{rl.Rectangle{10, 10, 50, 10}, "lvl 1", false, BA_Level{1}})
-	append(&w.buttons, Button{rl.Rectangle{10, 30, 50, 10}, "lvl 2", false, BA_Level{2}})
-	append(&w.buttons, Button{rl.Rectangle{10, 50, 50, 10}, "lvl 3", false, BA_Level{3}})
+	//append(&w.buttons, Button{rl.Rectangle{10, 10, 50, 10}, "lvl 1", false, BA_Level{1}})
+	//append(&w.buttons, Button{rl.Rectangle{10, 30, 50, 10}, "lvl 2", false, BA_Level{2}})
+	//append(&w.buttons, Button{rl.Rectangle{10, 50, 50, 10}, "lvl 3", false, BA_Level{3}})
+
+	level_count := len(w.manifest.levels)
+	gaps_count := (level_count*4) - (level_count-1) //a button has 2 "gaps" and a gap between buttons is one gap. nice ratio?
+	gaps_size : f32 = 100 / f32(gaps_count) //but this logic is a little messy? it works?
+	size_so_far : f32 = gaps_size
+	for level in w.manifest.levels {
+
+		append(&w.buttons, Button{rl.Rectangle{10, size_so_far, 50, gaps_size*2}, level.name, false, BA_Level{level.id}})
+		size_so_far += gaps_size*3
+		log233332(size_so_far)
+	}
 }
 
 update_game :: proc(w: ^World, dt: f32) {
@@ -111,7 +122,7 @@ update_game :: proc(w: ^World, dt: f32) {
 	else if rl.IsKeyPressed(Action[Input.right]) do player_velocity.x += 1
 
 	w.level.player.pos += player_velocity
-	if player_velocity != {0,0} {
+	if player_velocity != {0,0} || rl.IsKeyPressed(Action[Input.wait]) {
 		w.level.time += 1
 		update_time(w) //can get rid of level.time in favor of immediate mode, unless we track time for a stat or something/
 	}

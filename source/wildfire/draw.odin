@@ -67,7 +67,9 @@ draw_game :: proc(w: ^World) {
         for y in 0..<current_level.size.y {
             dest_rec := rl.Rectangle{f32(offset_x + f32(x) * scale), f32(offset_y + f32(y) * scale), f32(scale), f32(scale)}
             tile := w.level.grid[index_from_coords(x, y, current_level.size.x)]
+            if tile != .None {
                 rl.DrawTexturePro(w.resources.atlas, Object_Recs[tile], dest_rec, {0,0}, 0, rl.WHITE)
+            }
         }
     }
     player_dest_rec := rl.Rectangle{f32(offset_x + f32(w.level.player.pos.x) * scale), f32(offset_y + f32(w.level.player.pos.y) * scale), f32(scale), f32(scale)}

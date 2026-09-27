@@ -7,14 +7,15 @@ Input :: enum i32 {
 	menu_up,
 	menu_down,
     menu_select,
+
 	up,
 	down,
 	left,
 	right,
-	COUNT,
+	wait,
 }
 
-Action := [Input.COUNT]rl.KeyboardKey{}
+Action := [Input]rl.KeyboardKey{}
 
 init_bindings :: proc() {
 	// for i in Input(0) ..< Input.COUNT {
@@ -27,6 +28,7 @@ init_bindings :: proc() {
 	Action[Input.down] = .S
 	Action[Input.left] = .A
 	Action[Input.right] = .D
+	Action[Input.wait] = .SPACE
 }
 
 update_binding :: proc() {
