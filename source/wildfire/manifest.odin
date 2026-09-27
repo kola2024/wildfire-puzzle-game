@@ -46,7 +46,7 @@ manifest_levelinfo_to_grid :: proc(w: ^World) {
     //current_level := w.manifest.levels[w.level_index] //current_level.size.x*current_level.size.y
     for xstring in current_level.grid {
         for ychar in xstring {
-            append(&w.level.grid, Object(ychar))//grid_stream[x*int(current_level.size.y)+y] = Object(ychar)
+            append(&w.level.grid, rune_to_object(ychar))//grid_stream[x*int(current_level.size.y)+y] = Object(ychar)
         }
     }
     w.level.player.pos = current_level.player_pos

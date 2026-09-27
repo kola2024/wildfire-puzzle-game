@@ -53,29 +53,23 @@ draw_button_a :: proc(button: Button) {
     rl.GuiLabel(button.rect, button.label)
 }
 
-border_offset : i32 : 0 //i think i claculate this wrong below - but i pronbably dont even want a border anyway - TODO: fix INHERANT border anyway though!>!
 draw_game :: proc(w: ^World) {
     //rl.DrawCircleV(w.level.player.pos, 4, rl.PURPLE)
     current_level := w.manifest.levels[w.level_index]
 
-    scale : i32 = (RES_W - border_offset) / max(current_level.size.x, current_level.size.y)
-    inherant_offset : i32 = RES_W % max(current_level.size.x, current_level.size.y)
-    //dynamic_border_offset := something ? value_if_odd : value_if_even
-    total_offset := (inherant_offset + border_offset)
-    total_offset -= total_offset % 4
-    total_offset /= 2
-    
+    max_dimension := max(current_level.size.x, current_level.size.y)
+    scale := (RES_W) / f32(max_dimension)
+
+    offset_x := (RES_W - (scale * f32(current_level.size.x))) / 2
+    offset_y := (RES_W - (scale * f32(current_level.size.y))) / 2
+
     for x in 0..<current_level.size.x {
         for y in 0..<current_level.size.y {
-            dest_rec := rl.Rectangle{f32(x*scale)+f32(total_offset), f32(y*scale)+f32(total_offset), f32(scale), f32(scale)}
+            dest_rec := rl.Rectangle{f32(offset_x + f32(x) * scale), f32(offset_y + f32(y) * scale), f32(scale), f32(scale)}
             tile := w.level.grid[index_from_coords(x, y, current_level.size.x)]
-            //if tile != .None {
                 rl.DrawTexturePro(w.resources.atlas, Object_Recs[tile], dest_rec, {0,0}, 0, rl.WHITE)
-            //}
-            //case .None:
-            //case .Rock: rl.DrawTexturePro(Object_Recs[.Rock], )
         }
     }
-    player_dest_rec := rl.Rectangle{f32(w.level.player.pos.x*scale)+f32(total_offset), f32(w.level.player.pos.y*scale)+f32(total_offset), f32(scale), f32(scale)}
+    player_dest_rec := rl.Rectangle{f32(offset_x + f32(w.level.player.pos.x) * scale), f32(offset_y + f32(w.level.player.pos.y) * scale), f32(scale), f32(scale)}
     rl.DrawTexturePro(w.resources.atlas, Object_Recs[Object.None], player_dest_rec, {0,0}, 0, rl.RED)
 }

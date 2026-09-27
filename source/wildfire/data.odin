@@ -62,11 +62,6 @@ Level :: struct {
     time: i32,
 }   
 
-Object :: enum u8 {
-    None = '0',
-    Rock = '1',
-}
-
 Button :: struct {
     rect: rl.Rectangle,
     label: cstring,

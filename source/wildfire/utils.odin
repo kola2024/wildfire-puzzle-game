@@ -20,10 +20,10 @@ screen_to_game :: proc(w: ^World, vec: Vec2) -> Vec2 {
     return res.xy //SWIZZLE!
 }
 
-coords_from_index :: proc(index: int, width: int) -> (i32, i32) {
+coords_from_index :: proc(index: int, width: i32) -> (IVec2) {
 	x := i32(index) % i32(width)
 	y := i32(index) / i32(width)
-	return x, y
+	return {x, y}
 }
 
 index_from_coords :: proc(x, y, width: i32) -> i32 {

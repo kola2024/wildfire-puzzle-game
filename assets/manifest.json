@@ -4,7 +4,7 @@
             "id": 1,
             "name": "test",
             "size": [
-                8,
+                6,
                 8
             ],
             "player_pos": [
@@ -12,14 +12,82 @@
                 6
             ],
             "grid": [
-                "10001000",
-                "00001000",
-                "10001100",
-                "00001010",
-                "11000000",
-                "00001100",
-                "10000000",
-                "00001000"
+                "100010",
+                "000010",
+                "00w010",
+                "110000",
+                "10f011",
+                "00a0w0",
+                "1wa000",
+                "000011"
+            ]
+        },
+        {
+            "id": 2,
+            "name": "larges_test",
+            "size": [
+                30,
+                20
+            ],
+            "player_pos": [
+                10,
+                15
+            ],
+            "grid": [
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwfwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                "wwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+            ]
+        },
+        {
+            "id": 3,
+            "name": "large_test",
+            "size": [
+                30,
+                20
+            ],
+            "player_pos": [
+                10,
+                15
+            ],
+            "grid": [
+                "                              ",
+                "                              ",
+                "                              ",
+                "          wwww                ",
+                "          w  w                ",
+                "          w  w                ",
+                "          w  wwwwww           ",
+                "          w       w           ",
+                "          wwaww   w           ",
+                "              w   w           ",
+                "              w   f           ",
+                "              f   w           ",
+                "              wwaww           ",
+                "                              ",
+                "                              ",
+                "                              ",
+                "                              ",
+                "                              ",
+                "                              ",
+                "                              "
             ]
         }
     ]

@@ -2,7 +2,6 @@ package fire
 
 import rl "vendor:raylib"
 //import "core:fmt"
-import "core:math"
 //import "core:math/linalg"
 //import "core:math/rand"
 
@@ -99,23 +98,65 @@ init_main_menu :: proc(w: ^World, dt: f32) {
 
 init_level_menu :: proc(w: ^World, dt: f32) {
 	//temp: just one button
-	append(&w.buttons, Button{rl.Rectangle{10, 50, 50, 10}, "lvl 1", false, BA_Level{1}})
+	append(&w.buttons, Button{rl.Rectangle{10, 10, 50, 10}, "lvl 1", false, BA_Level{1}})
+	append(&w.buttons, Button{rl.Rectangle{10, 30, 50, 10}, "lvl 2", false, BA_Level{2}})
+	append(&w.buttons, Button{rl.Rectangle{10, 50, 50, 10}, "lvl 3", false, BA_Level{3}})
 }
 
 update_game :: proc(w: ^World, dt: f32) {
 	player_velocity := IVec2{0,0}
 	if rl.IsKeyPressed(Action[Input.up]) do player_velocity.y -= 1
-	if rl.IsKeyPressed(Action[Input.down]) do player_velocity.y += 1
-	if rl.IsKeyPressed(Action[Input.left]) do player_velocity.x -= 1
-	if rl.IsKeyPressed(Action[Input.right]) do player_velocity.x += 1
+	else if rl.IsKeyPressed(Action[Input.down]) do player_velocity.y += 1
+	else if rl.IsKeyPressed(Action[Input.left]) do player_velocity.x -= 1
+	else if rl.IsKeyPressed(Action[Input.right]) do player_velocity.x += 1
 
 	w.level.player.pos += player_velocity
-	abs_player_velocity := IVec2{math.abs(player_velocity.x), math.abs(player_velocity.y)}
-	if abs_player_velocity != {0,0} {
-		if abs_player_velocity == {1,1} do w.level.time += 2
-		else do w.level.time += 1
+	if player_velocity != {0,0} {
+		w.level.time += 1
+		update_time(w) //can get rid of level.time in favor of immediate mode, unless we track time for a stat or something/
 	}
-	log233332(w.level.time)
+}
+
+update_time :: proc(w: ^World) {
+
+	grid := w.level.grid
+	grid_width := int(w.manifest.levels[w.level_index].size.x)
+
+	for &object in w.level.grid {if object == .Baby_Flame do object = .Flame}
+	for &object, index in w.level.grid {
+		switch object {
+		case .None:
+		case .Wheat:
+		case .Flame: 
+			right := index+1 //note: check bounds
+			if right < len(grid) {
+				if grid[right] == .Wheat {
+					grid[right] = .Baby_Flame
+				}
+			}
+			left := index-1
+			if left >= 0 && left / grid_width == index / grid_width {
+				if grid[left] == .Wheat {
+					grid[left] = .Baby_Flame
+				}
+			}
+			down := index+grid_width
+			if down < len(grid) {
+				if grid[down] == .Wheat {
+					grid[down] = .Baby_Flame
+				}
+			}
+			up := index-grid_width
+			if up >= 0 {
+				if grid[up] == .Wheat {
+					grid[up] = .Baby_Flame
+				}
+			}
+			object = .Ash
+		case .Baby_Flame:
+		case .Ash:
+		}
+	}
 }
 
 
