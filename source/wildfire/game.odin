@@ -26,6 +26,9 @@ init_world :: proc() -> World {
 }
 
 update_world :: proc(w: ^World, dt: f32) {
+
+	if action_pressed(.fullscreen) do rl.ToggleBorderlessWindowed()
+
     prev_state := w.state
 
 	w.screen = {rl.GetScreenWidth(), rl.GetScreenHeight()}
@@ -48,6 +51,7 @@ update_world :: proc(w: ^World, dt: f32) {
 						w.run = false
 					case BA_State:
 						w.state = a.state
+						w.game_menu = false //so dumb
 					case BA_Level:
 						w.state = .game
 						for level, index in w.manifest.levels {
@@ -56,6 +60,8 @@ update_world :: proc(w: ^World, dt: f32) {
 								manifest_levelinfo_to_grid(w)
 							}
 						}
+					case BA_Close_Game_Menu:
+						close_game_menu(w) //this is kind of dumb. 
 					}
 				}
 				//else logic?
@@ -65,10 +71,11 @@ update_world :: proc(w: ^World, dt: f32) {
 
 	switch w.state {
 	case .main_menu:
+		update_main_menu(w, dt)
 	case .level_menu:
+		update_level_menu(w, dt)
 	case .game:
 		update_game(w, dt)
-	case .game_menu:
 	}
 
 	if prev_state != w.state { 
@@ -82,13 +89,18 @@ update_world :: proc(w: ^World, dt: f32) {
 		init_level_menu(w, dt)
 	case .game:
 		//update_game(w, dt)
-	case .game_menu:
 	}
 }
 
+update_main_menu :: proc(w: ^World, dt: f32) {
+	if action_pressed(.back) do w.run = false 
+}
+
+update_level_menu :: proc(w: ^World, dt: f32) {
+	if action_pressed(.back) do w.state = .main_menu
+}
 
 
-   
 }
 
 init_main_menu :: proc(w: ^World, dt: f32) {
@@ -114,7 +126,29 @@ init_level_menu :: proc(w: ^World, dt: f32) {
 	}
 }
 
+close_game_menu :: proc(w: ^World) {
+	w.game_menu = false
+	clear(&w.buttons)
+}
+
 update_game :: proc(w: ^World, dt: f32) {
+
+	
+	if action_pressed(.back) {
+		if w.game_menu {
+			close_game_menu(w)
+		} else {
+			w.game_menu = true
+			init_game_menu(w)
+		}
+	}
+
+	if w.game_menu {
+		update_game_menu()
+		return
+	}
+
+
 	player_velocity := IVec2{0,0}
 	if action_pressed(.up) do player_velocity.y -= 1
 	else if action_pressed(.down) do player_velocity.y += 1
@@ -126,7 +160,14 @@ update_game :: proc(w: ^World, dt: f32) {
 		w.level.time += 1
 		update_time(w) //can get rid of level.time in favor of immediate mode, unless we track time for a stat or something/
 	}
+
 }
+
+init_game_menu :: proc(w: ^World) {
+	append(&w.buttons, Button{rl.Rectangle{20, 20, 40, 10}, "Resume", false, BA_Close_Game_Menu{}})
+	append(&w.buttons, Button{rl.Rectangle{20, 40, 40, 10}, "Quit", false, BA_State{.level_menu}})
+}
+update_game_menu :: proc() {}
 
 update_time :: proc(w: ^World) {
 
@@ -142,8 +183,8 @@ update_time :: proc(w: ^World) {
 		case .None:
 		case .Wheat:
 		case .Flame: 
-			right := index+1 //note: check bounds
-			if right < len(grid) {
+			right := index+1
+			if right < len(grid) && right / grid_width == index / grid_width {
 				if grid[right] == .Wheat do grid[right] = .Baby_Flame
 				else if grid[right] == .Flower do grid[right] = .Burning_Flower
 			}
@@ -168,35 +209,5 @@ update_time :: proc(w: ^World) {
 		case .Burning_Flower:
 		case .Flower:
 		}
-	}
-}
-
-
-level :: proc(w: ^World) {
-
-}
-
-back :: proc(w: ^World) {
-	switch w.state {
-	case .main_menu:
-		w.run = false
-	case .level_menu:
-        w.state = .main_menu
-	case .game:
-        w.state = .level_menu
-	case .game_menu:
-        w.state = .game
-	}
-}
-
-forward :: proc(w: ^World) {
-	switch w.state {
-	case .main_menu:
-		w.state = .level_menu
-	case .level_menu:
-		//w.state = .game
-	case .game:
-        w.state = .game_menu
-	case .game_menu:
 	}
 }

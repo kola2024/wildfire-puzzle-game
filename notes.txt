@@ -1,15 +1,7 @@
-main plans:
-simple:
 level builder
-level menu 
-levels and loading 
-main menu
-
-
 
 
 creative:
-grid based puzzle game where a fire spreads.
 the goal is to stop the fire/protect an area or majority.
 level 1: fire top corner, player has the default "grass cut" ability to prevent fire from spreading further by isolation
 
@@ -29,13 +21,6 @@ player interaction
 
 dynamic letterbox with shader?
 
-LOG
+notes
 
-pre:
-    set up env and wasm compilation with nice template (i tried myself but very hard and i dont want to)
-    plans:
-        set up nice letterboxing for a square screen just because its clean and neat and easy (matrix?). see from grid game rentex
-
-2026/09/18:
-
-
+need a label string method (rec, string)

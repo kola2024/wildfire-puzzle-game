@@ -22,12 +22,12 @@ Game_State :: enum u8 {
     main_menu,
     level_menu,
     game,
-    game_menu,
 }
 
 World :: struct {
     run: bool,
     state: Game_State,
+    game_menu: bool,
     level: Level, //level (game)
     game: Space,
     buttons: [dynamic]Button, //buttons
@@ -77,10 +77,14 @@ BA_Level :: struct {
 BA_Exit :: struct {
 
 }
+BA_Close_Game_Menu :: struct {
+
+}
 Button_Action :: union {
     BA_Level,
     BA_State,
     BA_Exit,
+    BA_Close_Game_Menu,
 }
 
 /*

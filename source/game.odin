@@ -14,9 +14,11 @@ w: game.World
 
 init :: proc() {
 	run = true
-	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT})
+	rl.SetConfigFlags({.WINDOW_RESIZABLE, .VSYNC_HINT,})
 	rl.InitWindow(i32(WIN_W), i32(WIN_H), "fire!!!!!!!!!!!! ❤️‍🔥🔥🔥🔥🔥🔥🔥🔥")
 	rl.SetExitKey(.F12)
+	rl.SetWindowMinSize(WIN_H, WIN_H)
+	//rl.GuiSetStyle(.DEFAULT, i32(rl.GuiDefaultProperty.TEXT_SIZE), 30)
 	w = game.init_world()
 	rl.SetTargetFPS(60)
 	//only use assets folder. both loadTexture and read_entire_file wrapper should work

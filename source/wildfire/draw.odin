@@ -19,10 +19,7 @@ draw_world :: proc(w: ^World) {
     
 
 
-    for b in w.buttons {
-        if !b.active do draw_button(b)
-        else do draw_button_a(b)
-    }
+    
     rl.EndTextureMode()
     src := rl.Rectangle{0, 0, RES_W, -RES_W}
     dst := rl.Rectangle{w.game.pos.x, w.game.pos.y, w.game.size, w.game.size}
@@ -36,21 +33,33 @@ draw_world :: proc(w: ^World) {
 
 	case .game:
 		draw_game(w)
-	case .game_menu:
 	}
+
+    if w.game_menu {
+        rl.DrawRectanglePro({0, 0, 100, 100}, {0,0}, 0, {0,0,0,150})
+        rl.DrawRectanglePro({10, 10, 80, 80}, {0,0}, 0, rl.BEIGE)
+    }
+
+    for b in w.buttons {
+        if !b.active do draw_button(b)
+        else do draw_button_a(b)
+    }
+
     rl.EndMode2D()
+
+    
     //dont rl.EndDrawing()
 }
 
 //temp. in future add color and style whatnot
 draw_button :: proc(button: Button) {
-    rl.DrawRectangleRec(button.rect, rl.LIME)
-    rl.GuiLabel(button.rect, button.label)
+    rl.DrawRectangleRec(button.rect, rl.RAYWHITE)
+    rl.DrawTextEx(rl.GetFontDefault(), button.label, {button.rect.x+1, button.rect.y}, 5, 1, rl.BLACK)
 }
 
 draw_button_a :: proc(button: Button) {
-    rl.DrawRectangleRec(button.rect, rl.GREEN)
-    rl.GuiLabel(button.rect, button.label)
+    rl.DrawRectangleRec(button.rect, rl.GRAY)
+    rl.DrawTextEx(rl.GetFontDefault(), button.label, {button.rect.x+1, button.rect.y}, 5, 1, rl.BLACK)
 }
 
 draw_game :: proc(w: ^World) {
