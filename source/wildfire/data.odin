@@ -80,11 +80,13 @@ BA_Exit :: struct {
 BA_Close_Game_Menu :: struct {
 
 }
+BA_Nothing :: struct {}
 Button_Action :: union {
     BA_Level,
     BA_State,
     BA_Exit,
     BA_Close_Game_Menu,
+    BA_Nothing,
 }
 
 /*

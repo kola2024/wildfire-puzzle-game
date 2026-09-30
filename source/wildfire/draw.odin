@@ -41,7 +41,8 @@ draw_world :: proc(w: ^World) {
     }
 
     for b in w.buttons {
-        if !b.active do draw_button(b)
+        if _, ok := b.action.(BA_Nothing) ; ok do draw_button_info(b)
+        else if !b.active do draw_button(b)
         else do draw_button_a(b)
     }
 
@@ -60,6 +61,11 @@ draw_button :: proc(button: Button) {
 draw_button_a :: proc(button: Button) {
     rl.DrawRectangleRec(button.rect, rl.GRAY)
     rl.DrawTextEx(rl.GetFontDefault(), button.label, {button.rect.x+1, button.rect.y}, 5, 1, rl.BLACK)
+}
+
+draw_button_info :: proc(button: Button) {
+    //rl.DrawRectangleRec(button.rect, rl.RAYWHITE)
+    rl.DrawTextEx(rl.GetFontDefault(), button.label, {button.rect.x+1, button.rect.y}, 8, 1, rl.RED)
 }
 
 draw_game :: proc(w: ^World) {

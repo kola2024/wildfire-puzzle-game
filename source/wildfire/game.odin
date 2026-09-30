@@ -62,6 +62,7 @@ update_world :: proc(w: ^World, dt: f32) {
 						}
 					case BA_Close_Game_Menu:
 						close_game_menu(w) //this is kind of dumb. 
+					case BA_Nothing:
 					}
 				}
 				//else logic?
@@ -148,14 +149,38 @@ update_game :: proc(w: ^World, dt: f32) {
 		return
 	}
 
+		//player update
+	grid_width := w.manifest.levels[w.level_index].size.x
+	grid_height := w.manifest.levels[w.level_index].size.y
 
+	//player lose/level state check (right now in a placeholder.. kind of..)
+	lose :: proc(w: ^World) {
+		w.game_menu = true
+		init_game_menu(w)
+		append(&w.buttons, Button{rl.Rectangle{27, 2, 40, 10}, "You Lose!", false, BA_Nothing{}})
+	}
+	player_index_pos := index_from_coords(w.level.player.pos.x, w.level.player.pos.y, grid_width)
+	player_grid_pos := w.level.grid[player_index_pos]
+	if player_grid_pos == .Flame_Tiny || player_grid_pos == .Flame_Small do lose(w)
+
+	//player movement
 	player_velocity := IVec2{0,0}
 	if action_pressed(.up) do player_velocity.y -= 1
 	else if action_pressed(.down) do player_velocity.y += 1
 	else if action_pressed(.left) do player_velocity.x -= 1
 	else if action_pressed(.right) do player_velocity.x += 1
 
-	w.level.player.pos += player_velocity
+	new_player_pos := w.level.player.pos + player_velocity
+	new_player_index_pos := index_from_coords(new_player_pos.x, new_player_pos.y, grid_width)
+	
+	//bounds check
+	if new_player_pos.x < 0 || new_player_pos.x > grid_width-1 do return
+	if new_player_pos.y < 0 || new_player_pos.y > grid_height-1 do return
+	//object collision check (for walls and such, no interpolation)
+	if w.level.grid[new_player_index_pos] == .Ash do return
+
+	w.level.player.pos = new_player_pos
+
 	if player_velocity != {0,0} || action_pressed(.wait) {
 		w.level.time += 1
 		update_time(w) //can get rid of level.time in favor of immediate mode, unless we track time for a stat or something/
@@ -175,39 +200,42 @@ update_time :: proc(w: ^World) {
 	grid_width := int(w.manifest.levels[w.level_index].size.x)
 
 	for &object in w.level.grid {
-		if object == .Baby_Flame do object = .Flame
-		else if object == .Burning_Flower do object = .Baby_Flame
+		if object == .Flame do object = .Ash
+		if object == .Flame_Small do object = .Flame //has to be before other
+		if object == .Flame_Tiny do object = .Flame_Small
+		else if object == .Burning_Flower do object = .Flame_Tiny
 	}
 	for &object, index in w.level.grid {
 		switch object {
 		case .None:
 		case .Wheat:
-		case .Flame: 
+		case .Flame_Small: 
 			right := index+1
 			if right < len(grid) && right / grid_width == index / grid_width {
-				if grid[right] == .Wheat do grid[right] = .Baby_Flame
+				if grid[right] == .Wheat do grid[right] = .Flame_Tiny
 				else if grid[right] == .Flower do grid[right] = .Burning_Flower
 			}
 			left := index-1
 			if left >= 0 && left / grid_width == index / grid_width {
-				if grid[left] == .Wheat do grid[left] = .Baby_Flame
+				if grid[left] == .Wheat do grid[left] = .Flame_Tiny
 				else if grid[left] == .Flower do grid[left] = .Burning_Flower
 			}
 			down := index+grid_width
 			if down < len(grid) {
-				if grid[down] == .Wheat do grid[down] = .Baby_Flame
+				if grid[down] == .Wheat do grid[down] = .Flame_Tiny
 				else if grid[down] == .Flower do grid[down] = .Burning_Flower
 			}
 			up := index-grid_width
 			if up >= 0 {
-				if grid[up] == .Wheat do grid[up] = .Baby_Flame
+				if grid[up] == .Wheat do grid[up] = .Flame_Tiny
 				else if grid[up] == .Flower do grid[up] = .Burning_Flower
 			}
-			object = .Ash
-		case .Baby_Flame:
+		case .Flame_Tiny:
+		case .Flame:
 		case .Ash:
 		case .Burning_Flower:
 		case .Flower:
+		case .Star:
 		}
 	}
 }
