@@ -1,32 +1,23 @@
 package fire
 
 import rl "vendor:raylib"
-//import "core:fmt"
-//import "core:math"
-//import "core:math/linalg"
-//import "core:math/rand"
 
 RES_W :: 100
 
 draw_world :: proc(w: ^World) {
     //dont rl.BeginDrawing()
+
 	rl.ClearBackground(rl.BLACK)
-    rl.BeginTextureMode(w.game.rentex)
+    rl.BeginTextureMode(w.game.rentex) // is this rentex completely useless.?
     rl.ClearBackground({20, 20, 20, 255})
-
-    //rl.DrawCircle(0, 0, 5, rl.YELLOW)
-
-    
-
-
-    
     rl.EndTextureMode()
+
     src := rl.Rectangle{0, 0, RES_W, -RES_W}
     dst := rl.Rectangle{w.game.pos.x, w.game.pos.y, w.game.size, w.game.size}
     rl.DrawTexturePro(w.game.rentex.texture, src, dst, {0,0}, 0, rl.WHITE)
+
     ratio := w.game.size / RES_W
     cam := rl.Camera2D{w.game.pos, {0,0}, 0, ratio}
-    //w.game.
     rl.BeginMode2D(cam)
     switch w.state {
 	case .main_menu, .level_menu:
@@ -52,7 +43,7 @@ draw_world :: proc(w: ^World) {
     //dont rl.EndDrawing()
 }
 
-//temp. in future add color and style whatnot
+//all draw_buttons are temp (lol). in future add color and style whatnot
 draw_button :: proc(button: Button) {
     rl.DrawRectangleRec(button.rect, rl.RAYWHITE)
     rl.DrawTextEx(rl.GetFontDefault(), button.label, {button.rect.x+1, button.rect.y}, 5, 1, rl.BLACK)

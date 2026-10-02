@@ -27,16 +27,15 @@ rune_to_object :: proc(r: rune) -> Object {
 	}
 	return .None
 }
-ATLAS_WIDTH :: 4	//
-ATLAS_HEIGHT :: 3//
+ATLAS_WIDTH :: 4
+ATLAS_HEIGHT :: 3
+#assert(len(Object) - 1 < ATLAS_WIDTH * ATLAS_HEIGHT, "u forgot to change atlas!!")
 
 ATLAS_TILE_SIZE :: 16
 
 Object_Recs : [Object]rl.Rectangle
 
 init_object_tex :: proc() {
-
-    assert(len(Object) - 1 <= ATLAS_WIDTH * ATLAS_HEIGHT, "u forgot to change atlas!!")
 
 	atlas_rec :: proc(index: int) -> rl.Rectangle {
 		return rl.Rectangle{f32(index % ATLAS_WIDTH) * ATLAS_TILE_SIZE, f32(index / ATLAS_WIDTH) * ATLAS_TILE_SIZE, ATLAS_TILE_SIZE, ATLAS_TILE_SIZE}

@@ -24,3 +24,11 @@ dynamic letterbox with shader?
 notes
 
 need a label string method (rec, string)
+need a better state machine. i have menu and game state: maybe make menu its own fsM? (game)
+
+
+
+small
+
+can get rid of dt entirely.. only reason i keep is in case i want animatrions for firwe and such
+get rid of mouse support? mouse isnt used in game so makes no sense to allow in menus

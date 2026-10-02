@@ -1,9 +1,6 @@
 package fire
 
 import rl "vendor:raylib"
-//import "core:fmt"
-//import "core:math/linalg"
-//import "core:math/rand"
 
 init_world :: proc() -> World {
 	w := World {
@@ -21,7 +18,6 @@ init_world :: proc() -> World {
     init_bindings()
     init_main_menu(&w, 0)
 
-    unmarshal_manifest()
 	return w
 }
 
@@ -45,7 +41,7 @@ update_world :: proc(w: ^World, dt: f32) {
 		check_buttons_active(w)
 		for &b in w.buttons {
 			if b.active {
-				if rl.IsMouseButtonPressed(.LEFT) || action_pressed(.menu_select) {
+				if rl.IsMouseButtonPressed(.LEFT) || action_pressed(.menu_select) { //@MOUSE
 					switch a in b.action {
 					case BA_Exit:
 						w.run = false
@@ -65,11 +61,11 @@ update_world :: proc(w: ^World, dt: f32) {
 					case BA_Nothing:
 					}
 				}
-				//else logic?
 			}
 		}
 	}
 
+	//update based on state
 	switch w.state {
 	case .main_menu:
 		update_main_menu(w, dt)
@@ -79,17 +75,15 @@ update_world :: proc(w: ^World, dt: f32) {
 		update_game(w, dt)
 	}
 
+	//initialize based on state (on a per switch basis)
 	if prev_state != w.state { 
         clear(&w.buttons)
-		log233332("cleared")
 	switch w.state {
 	case .main_menu:
 		init_main_menu(w, dt)
-
 	case .level_menu:
 		init_level_menu(w, dt)
 	case .game:
-		//update_game(w, dt)
 	}
 }
 
@@ -145,7 +139,7 @@ update_game :: proc(w: ^World, dt: f32) {
 	}
 
 	if w.game_menu {
-		update_game_menu()
+		//update_game_menu()
 		return
 	}
 
@@ -161,7 +155,10 @@ update_game :: proc(w: ^World, dt: f32) {
 	}
 	player_index_pos := index_from_coords(w.level.player.pos.x, w.level.player.pos.y, grid_width)
 	player_grid_pos := w.level.grid[player_index_pos]
-	if player_grid_pos == .Flame_Tiny || player_grid_pos == .Flame_Small do lose(w)
+	if player_grid_pos == .Flame_Tiny || player_grid_pos == .Flame_Small || player_grid_pos == .Flame {
+		 lose(w)
+		 return
+	}
 
 	//player movement
 	player_velocity := IVec2{0,0}
@@ -192,7 +189,7 @@ init_game_menu :: proc(w: ^World) {
 	append(&w.buttons, Button{rl.Rectangle{20, 20, 40, 10}, "Resume", false, BA_Close_Game_Menu{}})
 	append(&w.buttons, Button{rl.Rectangle{20, 40, 40, 10}, "Quit", false, BA_State{.level_menu}})
 }
-update_game_menu :: proc() {}
+//update_game_menu :: proc() {}
 
 update_time :: proc(w: ^World) {
 

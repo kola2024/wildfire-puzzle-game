@@ -1,4 +1,3 @@
-#+feature dynamic-literals
 package fire
 
 import rl "vendor:raylib"
@@ -35,7 +34,9 @@ init_bindings :: proc() {
 	bind(.back, .ESCAPE)
 	//log233332(action[.wait])
 }
+
 bind :: proc{bind_index, bind_null}
+
 bind_index :: proc(input: Input, index: int, key: rl.KeyboardKey) {
 	action[input][index] = key
 }
@@ -65,6 +66,3 @@ action_pressed :: proc(input: Input) -> bool {
 update_binding :: proc() { //TODO: do
 
 }
-
-//... if we really need or want to have many keys -> one action, we can invert the map to be a map of KEYS to ACTIONS
-//this isnt too useful by itself as now we face the opposite issue but you can instead map KEYS to a bitset of ACTIONS for a wider range

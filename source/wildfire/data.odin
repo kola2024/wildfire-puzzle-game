@@ -52,15 +52,15 @@ Space :: struct {
     pos: Vec2,
 }
 
-Player :: struct {
-    pos: IVec2,
-}
-
 Level :: struct {
     grid: [dynamic]Object,
     player: Player,
     time: i32,
 }   
+
+Player :: struct {
+    pos: IVec2,
+}
 
 Button :: struct {
     rect: rl.Rectangle,
@@ -68,6 +68,7 @@ Button :: struct {
     active: bool,
     action: Button_Action,
 }
+
 BA_State :: struct {
     state: Game_State,
 }
@@ -88,10 +89,3 @@ Button_Action :: union {
     BA_Close_Game_Menu,
     BA_Nothing,
 }
-
-/*
-(*0): options for "registering" state change:
-1: capture previous state change every frame. not a fan as it bloats struct
-2: use an OO style public proc that enforces update upon a specified state_change() proc. dont like as ill forget.
-
-*/
