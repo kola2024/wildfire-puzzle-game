@@ -18,6 +18,11 @@ check_buttons_active :: proc(w: ^World) {
 }
 
 check_input_mode :: proc(w: ^World) {
+    if ENABLE_MOUSE_CONTROL == false {
+        w.keyboard_input = true
+        return
+    }
+    
     if w.keyboard_input {
         w.keyboard_input = !mouse_moved(w)
     } else {

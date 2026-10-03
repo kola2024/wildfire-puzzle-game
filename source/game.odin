@@ -1,8 +1,6 @@
 package game
 
 import rl "vendor:raylib"
-//import "core:log"
-//import "core:fmt"
 import "core:c"
 import game "/wildfire"
 
@@ -18,12 +16,8 @@ init :: proc() {
 	rl.InitWindow(i32(WIN_W), i32(WIN_H), "fire!!!!!!!!!!!! ❤️‍🔥🔥🔥🔥🔥🔥🔥🔥")
 	rl.SetExitKey(.F12)
 	rl.SetWindowMinSize(WIN_H, WIN_H)
-	//rl.GuiSetStyle(.DEFAULT, i32(rl.GuiDefaultProperty.TEXT_SIZE), 30)
 	w = game.init_world()
 	rl.SetTargetFPS(60)
-	//only use assets folder. both loadTexture and read_entire_file wrapper should work
-	//_ = rl.LoadTexture("assets/round_cat.png")
-	//x := read_entire_file("example.txt")
 }
 
 update :: proc() {
@@ -35,29 +29,15 @@ update :: proc() {
 	game.draw_world(&w)
 	rl.DrawFPS(0, 0)
 	
-	// rl.DrawRectangleRec({0, 0, 220, 130}, rl.BLACK)
-	// rl.GuiLabel({10, 10, 200, 20}, "test")
-
-	// if rl.GuiButton({10, 90, 200, 20}, "Quit") {
 	if w.run == false do run = false
-	// }
 
 	rl.EndDrawing()
 
 	free_all(context.temp_allocator)
 }
 
-
-
-
-// DOnt touch stuff below. i dont know if its necessary but its part of karls example
-
-
-
-
-
-// In a web build, this is called when browser changes size. Remove the
-// `rl.SetWindowSize` call if you don't want a resizable game.
+//@k In a web build, this is called when browser changes size. Remove the
+//@k `rl.SetWindowSize` call if you don't want a resizable game.
 parent_window_size_changed :: proc(w, h: int) {
 	rl.SetWindowSize(c.int(w), c.int(h))
 }
@@ -68,7 +48,7 @@ shutdown :: proc() {
 
 should_run :: proc() -> bool {
 	when ODIN_OS != .JS {
-		// Never run this proc in browser. It contains a 16 ms sleep on web!
+		//@k Never run this proc in browser. It contains a 16 ms sleep on web!
 		if rl.WindowShouldClose() {
 			run = false
 		}
